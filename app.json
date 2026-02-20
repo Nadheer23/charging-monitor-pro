@@ -1,0 +1,9 @@
+{
+  "name": "ChargingMonitorPro",
+  "displayName": "ChargingMonitorPro",
+  "extra": {
+    "eas": {
+      "projectId": "0bf119f8-6b81-4436-81f9-2fa9d3fa1f4d"
+    }
+  }
+}
