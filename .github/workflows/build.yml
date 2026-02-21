@@ -23,7 +23,7 @@ jobs:
       - name: Fix jcenter in TTS library
         run: sed -i 's/jcenter()/mavenCentral()/g' node_modules/react-native-tts/android/build.gradle
 
-       - name: Set up JDK 17
+      - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
           java-version: '17'
