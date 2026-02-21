@@ -30,6 +30,7 @@ const options = {
   taskDesc: 'حارس البطارية يعمل في الخلفية',
   taskIcon: { name: 'ic_launcher', type: 'mipmap' },
   color: '#0f172a',
+  linkingURI: 'chargingmonitorpro://', // ضروري للأندرويد الحديث
   parameters: { delay: 5000 },
 };
 
@@ -42,10 +43,9 @@ const App = () => {
     Tts.setDefaultLanguage('ar-SA');
     Tts.setDefaultRate(0.4);
 
-    // طلب الإذن رسمياً عند فتح التطبيق
     const requestPermission = async () => {
       if (Platform.OS === 'android' && Platform.Version >= 33) {
-        await PermissionsAndroid.request('android.permission.POST_NOTIFICATIONS');
+        await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
       }
     };
     requestPermission();
@@ -58,7 +58,7 @@ const App = () => {
       setIsRunning(BackgroundService.isRunning());
     };
 
-    const interval = setInterval(updateStatus, 3000);
+    const interval = setInterval(updateStatus, 2000);
     return () => clearInterval(interval);
   }, []);
 
@@ -67,8 +67,12 @@ const App = () => {
       await BackgroundService.stop();
       setIsRunning(false);
     } else {
-      await BackgroundService.start(backgroundTask, options);
-      setIsRunning(true);
+      try {
+        await BackgroundService.start(backgroundTask, options);
+        setIsRunning(true);
+      } catch (e) {
+        console.log("Error starting service:", e);
+      }
     }
   };
 
