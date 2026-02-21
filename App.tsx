@@ -27,10 +27,9 @@ const backgroundTask = async (taskDataArguments) => {
 const options = {
   taskName: 'BatteryRadar',
   taskTitle: 'رادار نذير نشط 🛡️',
-  taskDesc: 'حارس البطارية يعمل في الخلفية',
+  taskDesc: 'حارس البطارية يحمي هاتفك الآن',
   taskIcon: { name: 'ic_launcher', type: 'mipmap' },
   color: '#0f172a',
-  linkingURI: 'chargingmonitorpro://', // ضروري للأندرويد الحديث
   parameters: { delay: 5000 },
 };
 
@@ -63,16 +62,16 @@ const App = () => {
   }, []);
 
   const toggleService = async () => {
-    if (BackgroundService.isRunning()) {
-      await BackgroundService.stop();
-      setIsRunning(false);
-    } else {
-      try {
+    try {
+      if (BackgroundService.isRunning()) {
+        await BackgroundService.stop();
+        setIsRunning(false);
+      } else {
         await BackgroundService.start(backgroundTask, options);
         setIsRunning(true);
-      } catch (e) {
-        console.log("Error starting service:", e);
       }
+    } catch (e) {
+      console.log("Start Error:", e);
     }
   };
 
@@ -108,11 +107,11 @@ const styles = StyleSheet.create({
   title: { fontSize: 24, fontWeight: 'bold', color: '#f8fafc', marginBottom: 40 },
   circleContainer: { marginBottom: 30 },
   circle: { width: 180, height: 180, borderRadius: 90, borderWidth: 8, alignItems: 'center', justifyContent: 'center', backgroundColor: '#1e293b' },
-  circleActive: { borderColor: '#10b981' },
+  circleActive: { borderColor: '#10b981', shadowColor: '#10b981', shadowRadius: 15 },
   circleNormal: { borderColor: '#64748b' },
   circleText: { fontSize: 50, fontWeight: 'bold', color: '#f8fafc' },
   circleLabel: { fontSize: 16, color: '#94a3b8' },
-  button: { paddingVertical: 15, paddingHorizontal: 40, borderRadius: 30, marginBottom: 30 },
+  button: { paddingVertical: 15, paddingHorizontal: 40, borderRadius: 30, marginBottom: 30, elevation: 10 },
   buttonStart: { backgroundColor: '#3b82f6' },
   buttonStop: { backgroundColor: '#ef4444' },
   buttonText: { color: '#ffffff', fontSize: 18, fontWeight: 'bold' },
